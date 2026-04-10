@@ -1,10 +1,19 @@
 #include "BloomFilter.h"
-#include <bits/stdc++.h>
+#include "Evaluator.h"
+#include <iostream>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 int main(){
-    BloomFilter myFilter(5);
-    cout << myFilter.IsInFilter("haha") << endl;
-    myFilter.AddToFilter("haha");
-    cout << myFilter.IsInFilter("haha") << endl;
+    Evaluator eval;
+
+    cout << "elements, fpr: ";
+    size_t n;cin >> n;
+    double fpr;cin >> fpr;
+
+    Result res = eval.runSingleExperiment(n,fpr,500);
+
+    cout << "\ntime taken: "<< res.timeTakenInMs <<"ms"<< endl;
+    cout << "misses: " << res.falseNegative << "\nfakes: " << res.falsePositive << endl;
 }
