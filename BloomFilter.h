@@ -20,7 +20,6 @@ class BloomFilter{
         bool getBit(size_t index) const;
     public:
         BloomFilter(size_t bits, size_t hashes);
-        BloomFilter(size_t approxElementCount, double fpr);
         bool IsInFilter(const std::string& data);
         void AddToFilter(const std::string& data);
 

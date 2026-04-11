@@ -2,18 +2,14 @@
 #include "Evaluator.h"
 #include <iostream>
 #include <chrono>
+#include <fstream>
+#include <set>
 using namespace std;
 using namespace std::chrono;
 
 int main(){
     Evaluator eval;
-
-    cout << "elements, fpr: ";
-    size_t n;cin >> n;
-    double fpr;cin >> fpr;
-
-    Result res = eval.runSingleExperiment(n,fpr,500);
-
-    cout << "\ntime taken: "<< res.timeTakenInMs <<"ms"<< endl;
-    cout << "misses: " << res.falseNegative << "\nfakes: " << res.falsePositive << endl;
+    Result res = eval.runSingleExperiment(1000000, 0.01, "data/real.txt", "data/fake.txt");
+    cout <<"Time taken: "<<res.timeTakenInMs <<"ms"<< endl;
+    cout << "FP: " << res.falsePositive << endl;
 }

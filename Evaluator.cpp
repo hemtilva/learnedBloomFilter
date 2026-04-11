@@ -3,13 +3,14 @@
 #include <random>
 #include <cmath>
 #include <iostream>
+#include <fstream>
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
 
 mt19937 Evaluator::rng(random_device{}());
 
-vector<string> Evaluator::generateRandomStrings(size_t count, size_t maxLenOfStrings){
+vector<string> Evaluator::generateRandomStrings(size_t count, size_t maxLenOfStrings, const string& path = ""){
     vector<string> result;
     result.reserve(count);
 
@@ -18,7 +19,7 @@ vector<string> Evaluator::generateRandomStrings(size_t count, size_t maxLenOfStr
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "0123456789";
 
-    uniform_int_distribution<size_t> lengthDist(1, maxLenOfStrings);
+    uniform_int_distribution<size_t> lengthDist(50, max((size_t)50,maxLenOfStrings));
     uniform_int_distribution<size_t> charDist(0, charset.size() - 1);
 
     for(size_t i = 0; i < count; i++)
@@ -36,18 +37,43 @@ vector<string> Evaluator::generateRandomStrings(size_t count, size_t maxLenOfStr
         result.push_back(move(s));
     }
 
+    if(path.size()){
+        ofstream file(path);
+        for(auto i: result){
+            file << i << endl;
+        }
+        file.close();
+    }
+
     return result;
 }
 
-Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, size_t stringLen = 200){
+Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, const string& pathReal,const string& pathFake){
     Result res;
-    Evaluator eval;
 
-    vector<string> real = eval.generateRandomStrings(elemenCount,stringLen);
-    vector<string> fake = eval.generateRandomStrings(elemenCount,stringLen);
+    vector<string> real;
+    vector<string> fake;
+    real.reserve(elemenCount);
+    fake.reserve(elemenCount);
+
+    ifstream realFile(pathReal);
+    string line;
+    for (size_t i = 0;getline(realFile,line) && i < elemenCount; i++)
+    {
+        real.push_back(line);
+    }
+    realFile.close();
+
+    ifstream fakeFile(pathFake);
+    for (size_t i = 0;getline(fakeFile,line) && i < elemenCount; i++)
+    {
+        fake.push_back(line);
+    }
+    fakeFile.close();
+    
 
     auto start = steady_clock().now();
-    BloomFilter bf = BloomFilter(elemenCount, fpr);
+    BloomFilter bf = BloomFilter(computeTheoryBits(elemenCount,fpr),7);
 
     for(auto i:real){
         bf.AddToFilter(i);

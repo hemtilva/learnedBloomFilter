@@ -23,8 +23,8 @@ class Evaluator{
 private:
     static std::mt19937 rng;
 public:
-    std::vector<std::string> generateRandomStrings(size_t count, size_t maxLenOfStrings);
-    Result runSingleExperiment(size_t elemenCount, double fpr, size_t stringLen);
+    std::vector<std::string> generateRandomStrings(size_t count, size_t maxLenOfStrings, const std::string& path);
+    Result runSingleExperiment(size_t elemenCount, double fpr,const std::string& pathReal,const std::string& pathFake);
     size_t computeTheoryBits(size_t elementCount, double fpr);
     size_t optimalHashes(size_t bits, size_t elementCount);
 };

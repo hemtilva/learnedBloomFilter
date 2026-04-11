@@ -1,5 +1,4 @@
 #include "BloomFilter.h"
-#include "Evaluator.h"
 using namespace std;
 
 BloomFilter::BloomFilter(size_t bits, size_t hashes){    
@@ -7,15 +6,6 @@ BloomFilter::BloomFilter(size_t bits, size_t hashes){
     hashCount = hashes;
 
     size_t words = (bits+63)/64;
-    filterArray.resize(words,0);
-}
-
-BloomFilter::BloomFilter(size_t approxElementCount, double fpr){
-    Evaluator eval;
-    bitSize = eval.computeTheoryBits(approxElementCount,fpr);
-    hashCount = eval.optimalHashes(bitSize,approxElementCount);
-
-    size_t words = (bitSize+63)/64;
     filterArray.resize(words,0);
 }
 
