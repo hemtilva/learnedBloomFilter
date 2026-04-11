@@ -4,6 +4,7 @@
 #include <bitset>
 #include <string>
 #include <random>
+#include <iostream>
 
 #ifndef EVAL_H
 #define EVAL_H
@@ -17,7 +18,10 @@ struct Result{
     size_t falseNegative = 0;
 
     size_t timeTakenInMs = 0;
+    size_t memoryNeeded = 0;
 };
+
+std::ostream& operator<<(std::ostream& os,const Result& res);
 
 class Evaluator{
 private:

@@ -22,6 +22,7 @@ class BloomFilter{
         BloomFilter(size_t bits, size_t hashes);
         bool IsInFilter(const std::string& data);
         void AddToFilter(const std::string& data);
+        size_t getMemoryCost();
 
 };
 

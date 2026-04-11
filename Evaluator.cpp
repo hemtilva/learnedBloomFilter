@@ -10,6 +10,13 @@ using namespace std::chrono;
 
 mt19937 Evaluator::rng(random_device{}());
 
+ostream& operator<<(ostream& os,const Result& res){
+    os <<"\nTime taken: "<<res.timeTakenInMs <<"ms"<< endl;
+    os << "FP: " << res.falsePositive << endl;
+    os << "Memory needed: " << (1.0*res.memoryNeeded) / (1024*1024) <<" MB"<< endl;
+    return os;
+}
+
 vector<string> Evaluator::generateRandomStrings(size_t count, size_t maxLenOfStrings, const string& path = ""){
     vector<string> result;
     result.reserve(count);
@@ -98,6 +105,7 @@ Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, const stri
     res.falseNegative = missCount;
 
     res.timeTakenInMs = duration.count();
+    res.memoryNeeded = bf.getMemoryCost();
 
     return res;
 }

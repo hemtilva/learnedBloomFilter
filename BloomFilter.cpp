@@ -131,3 +131,7 @@ bool BloomFilter::IsInFilter(const string& data){
     }
     return true;
 }
+
+size_t BloomFilter::getMemoryCost(){
+    return filterArray.capacity()*sizeof(uint64_t);
+}
