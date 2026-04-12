@@ -9,6 +9,6 @@ using namespace std::chrono;
 
 int main(){
     Evaluator eval;
-    Result res = eval.runSingleExperiment(500000, 0.01, "data/real.txt", "data/fake.txt");
+    Result res = eval.runSingleExperiment(1000000,0.01, "data/real.txt", "data/fake.txt");
     cout << res << endl;
 }

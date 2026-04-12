@@ -13,6 +13,8 @@ mt19937 Evaluator::rng(random_device{}());
 ostream& operator<<(ostream& os,const Result& res){
     os <<"\nTime taken: "<<res.timeTakenInMs <<"ms"<< endl;
     os << "FP: " << res.falsePositive << endl;
+    os << "Total inserts: " << res.insertCount << endl;
+    os << "Negative Queries: " << res.negativeQueryCount << endl;
     os << "Memory needed: " << (1.0*res.memoryNeeded) / (1024*1024) <<" MB"<< endl;
     return os;
 }
@@ -72,7 +74,7 @@ Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, const stri
     realFile.close();
 
     ifstream fakeFile(pathFake);
-    for (size_t i = 0;getline(fakeFile,line) && i < elemenCount; i++)
+    for (size_t i = 0;getline(fakeFile,line); i++)
     {
         fake.push_back(line);
     }
@@ -80,10 +82,11 @@ Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, const stri
     
 
     auto start = steady_clock().now();
-    BloomFilter bf = BloomFilter(computeTheoryBits(elemenCount,fpr),7);
+    BloomFilter bf = BloomFilter(computeTheoryBits(real.size(),fpr),7);
 
     for(auto i:real){
         bf.AddToFilter(i);
+        res.insertCount++;
     }
 
     size_t missCount = 0;
@@ -93,6 +96,7 @@ Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, const stri
 
     size_t fakeCount = 0;
     for(auto i:fake){
+        res.negativeQueryCount++;
         if(bf.IsInFilter(i)) fakeCount++;
     }
     
