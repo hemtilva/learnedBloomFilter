@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\cppbloom.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\cppbloom.dir/objects.a @CMakeFiles\cppbloom.dir\objects1.rsp
+C:\msys64\ucrt64\bin\c++.exe -shared -o cppbloom.cp311-win_amd64.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\cppbloom.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\cppbloom.dir\linkLibs.rsp
