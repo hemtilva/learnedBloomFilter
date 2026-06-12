@@ -410,6 +410,8 @@ _Python_INCLUDE_DIR:INTERNAL=C:/Users/hemti/AppData/Local/Programs/Python/Python
 //Python Properties
 _Python_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;9;64;<none>;cp311-win_amd64;;C:/Users/hemti/AppData/Local/Programs/Python/Python311/Lib;C:/Users/hemti/AppData/Local/Programs/Python/Python311/Lib;C:/Users/hemti/AppData/Local/Programs/Python/Python311/Lib/site-packages;C:/Users/hemti/AppData/Local/Programs/Python/Python311/Lib/site-packages
 _Python_INTERPRETER_SIGNATURE:INTERNAL=8bb7a5bf0a21c205277b1d92d737dd2c
+//Interpreter reason failure
+_Python_Interpreter_REASON_FAILURE:INTERNAL=
 //Path to a library.
 _Python_LIBRARY_DEBUG:INTERNAL=_Python_LIBRARY_DEBUG-NOTFOUND
 //Path to a library.

@@ -176,6 +176,30 @@ src/Evaluator.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/Evaluator.cpp.s
 .PHONY : src/Evaluator.cpp.s
 
+src/FeatureExtractor.obj: src/FeatureExtractor.cpp.obj
+.PHONY : src/FeatureExtractor.obj
+
+# target to build an object file
+src/FeatureExtractor.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/FeatureExtractor.cpp.obj
+.PHONY : src/FeatureExtractor.cpp.obj
+
+src/FeatureExtractor.i: src/FeatureExtractor.cpp.i
+.PHONY : src/FeatureExtractor.i
+
+# target to preprocess a source file
+src/FeatureExtractor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/FeatureExtractor.cpp.i
+.PHONY : src/FeatureExtractor.cpp.i
+
+src/FeatureExtractor.s: src/FeatureExtractor.cpp.s
+.PHONY : src/FeatureExtractor.s
+
+# target to generate assembly for a file
+src/FeatureExtractor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/FeatureExtractor.cpp.s
+.PHONY : src/FeatureExtractor.cpp.s
+
 src/binding.obj: src/binding.cpp.obj
 .PHONY : src/binding.obj
 
@@ -215,6 +239,9 @@ help:
 	@echo ... src/Evaluator.obj
 	@echo ... src/Evaluator.i
 	@echo ... src/Evaluator.s
+	@echo ... src/FeatureExtractor.obj
+	@echo ... src/FeatureExtractor.i
+	@echo ... src/FeatureExtractor.s
 	@echo ... src/binding.obj
 	@echo ... src/binding.i
 	@echo ... src/binding.s

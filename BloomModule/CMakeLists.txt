@@ -15,6 +15,7 @@ pybind11_add_module(
     src/binding.cpp
     src/BloomFilter.cpp
     src/Evaluator.cpp
+    src/FeatureExtractor.cpp
 )
 
 target_compile_options(cppbloom PRIVATE -O3)

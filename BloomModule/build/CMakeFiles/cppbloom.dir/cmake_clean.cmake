@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/cppbloom.dir/src/BloomFilter.cpp.obj.d"
   "CMakeFiles/cppbloom.dir/src/Evaluator.cpp.obj"
   "CMakeFiles/cppbloom.dir/src/Evaluator.cpp.obj.d"
+  "CMakeFiles/cppbloom.dir/src/FeatureExtractor.cpp.obj"
+  "CMakeFiles/cppbloom.dir/src/FeatureExtractor.cpp.obj.d"
   "CMakeFiles/cppbloom.dir/src/binding.cpp.obj"
   "CMakeFiles/cppbloom.dir/src/binding.cpp.obj.d"
   "cppbloom.cp311-win_amd64.pyd"
