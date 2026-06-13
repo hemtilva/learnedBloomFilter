@@ -1,13 +1,23 @@
 from typing import List
 import numpy as np
 import numpy.typing as npt
+from typing import Sequence
 
 
-def extract_features(
+def extract_basic_features(
     strings: List[str],
     vector_size: int
 ) -> npt.NDArray[np.float32]: ...
 
+def extract_sparse_ngrams(
+    strings: Sequence[str],
+    num_bins: int,
+) -> tuple[
+    npt.NDArray[np.float32],
+    npt.NDArray[np.int32],
+    npt.NDArray[np.int32],
+]:
+    ...
 
 class BloomFilter:
     def __init__(self, element_count: int, fpr: float) -> None: ...
