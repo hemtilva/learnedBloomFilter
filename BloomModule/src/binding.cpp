@@ -13,6 +13,7 @@ PYBIND11_MODULE(cppbloom, m){
 
     m.def("extract_features", &extract_basic_features);
     m.def("extract_sparse_ngrams", &extract_sparse_ngrams);
+    m.def("extract_token_hashes", &extract_token_hashes);
     
     py::class_<BloomFilter>(m, "BloomFilter")
         .def(py::init<size_t,double>())

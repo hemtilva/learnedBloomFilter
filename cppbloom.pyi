@@ -19,6 +19,16 @@ def extract_sparse_ngrams(
 ]:
     ...
 
+def extract_token_hashes(
+    strings: Sequence[str],
+    num_bins: int,
+) -> tuple[
+    npt.NDArray[np.float32],
+    npt.NDArray[np.int32],
+    npt.NDArray[np.int32],
+]:
+    ...
+
 class BloomFilter:
     def __init__(self, element_count: int, fpr: float) -> None: ...
     def add(self, data: str) -> None: ...

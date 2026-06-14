@@ -3,19 +3,99 @@
 #include <cctype>
 #include <cstdint>
 
+enum CharType {
+    ALPHA,
+    DIGIT,
+    DELIMITER
+};
+
+inline CharType get_char_type(char c) {
+    if (c >= '0' && c <= '9') {
+        return DIGIT;
+    }
+    if (c == '.' || c == '/' || c == '?' || c == '=' || 
+        c == '&' || c == '-' || c == '_' || c == ':' || c == '%') {
+        return DELIMITER;
+    }
+    return ALPHA;
+}
+
+py::tuple extract_token_hashes(const std::vector<std::string>& strings, int num_bins) {
+    std::vector<float> data;
+    std::vector<int> indices;
+    std::vector<int> indptr;
+
+    indptr.push_back(0);
+
+    for (const auto& s : strings) {
+        uint32_t current_hash = 0;
+        int token_length = 0;
+        CharType current_type = DELIMITER; 
+
+        for (char c : s) {
+            CharType type = get_char_type(c);
+            
+            if (type == DELIMITER) {
+                // If we hit a delimiter, flush the current token and discard the delimiter
+                if (token_length > 0) {
+                    indices.push_back(current_hash % num_bins);
+                    data.push_back(1.0f);
+                    current_hash = 0;
+                    token_length = 0;
+                }
+                current_type = DELIMITER;
+            } else {
+                // It is a Letter or a Digit
+                // If we were tracking a token, but the TYPE changed (e.g., letters -> numbers)
+                if (token_length > 0 && type != current_type) {
+                    // Flush the current word/number
+                    indices.push_back(current_hash % num_bins);
+                    data.push_back(1.0f);
+                    
+                    // Reset to start tracking the new word/number
+                    current_hash = 0;
+                    token_length = 0;
+                }
+                
+                // Accumulate the character into the current hash
+                current_hash = current_hash * 31 + static_cast<uint8_t>(c);
+                token_length++;
+                current_type = type; // Update state
+            }
+        }
+
+        // Flush the final token at the end of the string
+        if (token_length > 0) {
+            indices.push_back(current_hash % num_bins);
+            data.push_back(1.0f);
+        }
+
+        indptr.push_back(indices.size());
+    }
+
+    auto py_data = py::array_t<float>(data.size());
+    std::memcpy(py_data.mutable_data(), data.data(), data.size() * sizeof(float));
+
+    auto py_indices = py::array_t<int>(indices.size());
+    std::memcpy(py_indices.mutable_data(), indices.data(), indices.size() * sizeof(int));
+
+    auto py_indptr = py::array_t<int>(indptr.size());
+    std::memcpy(py_indptr.mutable_data(), indptr.data(), indptr.size() * sizeof(int));
+
+    return py::make_tuple(py_data, py_indices, py_indptr);
+}
+
 py::tuple extract_sparse_ngrams(const std::vector<std::string>& strings, int num_bins) {
     std::vector<float> data;
     std::vector<int> indices;
     std::vector<int> indptr;
 
-    // CSR matrices always start with an indptr of 0
     indptr.push_back(0);
 
     for (const auto& s : strings) {
         size_t s_len = s.length();
 
         if (s_len >= 3) {
-            // Fast Polynomial Hash for 3-grams
             for (size_t i = 0; i <= s_len - 3; i++) {
                 uint32_t h = (static_cast<uint8_t>(s[i]) * 961) + 
                              (static_cast<uint8_t>(s[i+1]) * 31) + 
@@ -27,7 +107,6 @@ py::tuple extract_sparse_ngrams(const std::vector<std::string>& strings, int num
         }
 
         if (s_len >= 4) {
-            // Fast Polynomial Hash for 4-grams (offset to prevent index overlap)
             for (size_t i = 0; i <= s_len - 4; i++) {
                 uint32_t h = (static_cast<uint8_t>(s[i]) * 29791) + 
                              (static_cast<uint8_t>(s[i+1]) * 961) + 
@@ -39,11 +118,9 @@ py::tuple extract_sparse_ngrams(const std::vector<std::string>& strings, int num
             }
         }
 
-        // Record the end of this row
         indptr.push_back(indices.size());
     }
 
-    // Safely copy C++ vectors to NumPy arrays to prevent memory leaks
     auto py_data = py::array_t<float>(data.size());
     std::memcpy(py_data.mutable_data(), data.data(), data.size() * sizeof(float));
 
