@@ -36,7 +36,6 @@ py::tuple extract_token_hashes(const std::vector<std::string>& strings, int num_
             CharType type = get_char_type(c);
             
             if (type == DELIMITER) {
-                // If we hit a delimiter, flush the current token and discard the delimiter
                 if (token_length > 0) {
                     indices.push_back(current_hash % num_bins);
                     data.push_back(1.0f);
@@ -45,26 +44,20 @@ py::tuple extract_token_hashes(const std::vector<std::string>& strings, int num_
                 }
                 current_type = DELIMITER;
             } else {
-                // It is a Letter or a Digit
-                // If we were tracking a token, but the TYPE changed (e.g., letters -> numbers)
                 if (token_length > 0 && type != current_type) {
-                    // Flush the current word/number
                     indices.push_back(current_hash % num_bins);
                     data.push_back(1.0f);
                     
-                    // Reset to start tracking the new word/number
                     current_hash = 0;
                     token_length = 0;
                 }
                 
-                // Accumulate the character into the current hash
                 current_hash = current_hash * 31 + static_cast<uint8_t>(c);
                 token_length++;
-                current_type = type; // Update state
+                current_type = type;
             }
         }
 
-        // Flush the final token at the end of the string
         if (token_length > 0) {
             indices.push_back(current_hash % num_bins);
             data.push_back(1.0f);
