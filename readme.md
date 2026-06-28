@@ -1,6 +1,6 @@
-##### **Despite the overhead Supports approx 1.78 Million Queries per Second**
+##### **Despite the overhead Supports approx 3.40 Million Queries per Second**
 
-##### **Amortized time of 550 ns per query**
+##### **Amortized time of 293 ns per query**
 
 ![Description of image](visuals/memory_latency_FPR_Threshold.png_0.1_4096.png)
 
