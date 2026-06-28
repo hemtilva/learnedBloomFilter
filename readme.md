@@ -4,6 +4,6 @@
 
 ![Description of image](visuals/memory_latency_FPR_Threshold.png_0.1_4096.png)
 
-![Description of image](visuals/memory_latency_FPR_Threshold.png_0.05_16384.png)
+![Description of image](visuals/memory_latency_FPR_Threshold.png_0.05_8192.png)
 
-![Description of image](visuals/memory_latency_FPR_Threshold.png_0.01_32768.png)
+![Description of image](visuals/memory_latency_FPR_Threshold.png_0.01_16384.png)

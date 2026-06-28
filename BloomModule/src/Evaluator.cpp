@@ -82,16 +82,14 @@ Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, const stri
     
     BloomFilter bf = BloomFilter(elemenCount,fpr);
 
+    auto start = steady_clock().now();
+
     for(auto i:real){
         bf.AddToFilter(i);
         res.insertCount++;
     }
 
-    auto start = steady_clock().now();
     size_t missCount = 0;
-    for(auto i:real){
-        if(!bf.IsInFilter(i)) missCount++;
-    }
 
     size_t fakeCount = 0;
     for(auto i:fake){
