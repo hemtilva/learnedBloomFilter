@@ -25,7 +25,7 @@ class BloomFilter{
         BloomFilter(size_t elementCount, double fpr);
         bool IsInFilter(const std::string& data);
         void AddToFilter(const std::string& data);
-        size_t getMemoryCost();
+        size_t getMemoryCost() const;
 };
 
 #endif

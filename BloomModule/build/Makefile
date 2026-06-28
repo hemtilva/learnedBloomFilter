@@ -200,6 +200,30 @@ src/FeatureExtractor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/FeatureExtractor.cpp.s
 .PHONY : src/FeatureExtractor.cpp.s
 
+src/LearnedBloomFilter.obj: src/LearnedBloomFilter.cpp.obj
+.PHONY : src/LearnedBloomFilter.obj
+
+# target to build an object file
+src/LearnedBloomFilter.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/LearnedBloomFilter.cpp.obj
+.PHONY : src/LearnedBloomFilter.cpp.obj
+
+src/LearnedBloomFilter.i: src/LearnedBloomFilter.cpp.i
+.PHONY : src/LearnedBloomFilter.i
+
+# target to preprocess a source file
+src/LearnedBloomFilter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/LearnedBloomFilter.cpp.i
+.PHONY : src/LearnedBloomFilter.cpp.i
+
+src/LearnedBloomFilter.s: src/LearnedBloomFilter.cpp.s
+.PHONY : src/LearnedBloomFilter.s
+
+# target to generate assembly for a file
+src/LearnedBloomFilter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cppbloom.dir\build.make CMakeFiles/cppbloom.dir/src/LearnedBloomFilter.cpp.s
+.PHONY : src/LearnedBloomFilter.cpp.s
+
 src/binding.obj: src/binding.cpp.obj
 .PHONY : src/binding.obj
 
@@ -242,6 +266,9 @@ help:
 	@echo ... src/FeatureExtractor.obj
 	@echo ... src/FeatureExtractor.i
 	@echo ... src/FeatureExtractor.s
+	@echo ... src/LearnedBloomFilter.obj
+	@echo ... src/LearnedBloomFilter.i
+	@echo ... src/LearnedBloomFilter.s
 	@echo ... src/binding.obj
 	@echo ... src/binding.i
 	@echo ... src/binding.s

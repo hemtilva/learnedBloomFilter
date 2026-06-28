@@ -112,3 +112,58 @@ Result Evaluator::runSingleExperiment(size_t elemenCount, double fpr, const stri
 
     return res;
 }
+
+Result Evaluator::runLearnedExperiment(
+        const std::vector<double>& weights, 
+        double bias, 
+        double threshold, 
+        int num_bins,
+        size_t backup_size,
+        double backup_fpr,
+        const std::string& pos_file,
+        const std::string& neg_file) {
+    
+    Result res;
+    res.insertCount = 0;
+    res.falsePositive = 0;
+    res.trueNegative = 0;
+
+    std::vector<std::string> positive_urls;
+    std::ifstream p_file(pos_file);
+    std::string line;
+    while (std::getline(p_file, line)) {
+        if (!line.empty()) positive_urls.push_back(line);
+    }
+
+    std::vector<std::string> negative_urls;
+    std::ifstream n_file(neg_file);
+    while (std::getline(n_file, line)) {
+        if (!line.empty()) negative_urls.push_back(line);
+    }
+
+    res.negativeQueryCount = negative_urls.size();
+
+    LearnedBloomFilter lbf(weights, bias, threshold, num_bins, backup_size, backup_fpr);
+
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    for (const auto& url : positive_urls) {
+        lbf.insert(url);
+        res.insertCount++;
+    }
+
+    for (const auto& url : negative_urls) {
+        if (lbf.contains(url)) {
+            res.falsePositive++;
+        } else {
+            res.trueNegative++;
+        }
+    }
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    
+    res.timeTakenInNs = std::chrono::duration_cast<std::chrono::nanoseconds>(end_time - start_time).count();
+    res.memoryNeeded = lbf.getMemoryCost(); 
+
+    return res;
+}

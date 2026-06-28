@@ -1,3 +1,6 @@
+#ifndef EVAL_H
+#define EVAL_H
+
 #include <cstdlib>
 #include <cstdint>
 #include <vector>
@@ -5,9 +8,7 @@
 #include <string>
 #include <random>
 #include <iostream>
-
-#ifndef EVAL_H
-#define EVAL_H
+#include "LearnedBloomFilter.h"
 
 struct Result{
     size_t insertCount = 0;
@@ -29,6 +30,16 @@ private:
 public:
     std::vector<std::string> generateRandomStrings(size_t count, size_t maxLenOfStrings, const std::string& path);
     Result runSingleExperiment(size_t elemenCount, double fpr,const std::string& pathReal,const std::string& pathFake);
+    Result runLearnedExperiment(
+        const std::vector<double>& weights, 
+        double bias, 
+        double threshold, 
+        int num_bins,
+        size_t backup_size,
+        double backup_fpr,
+        const std::string& pos_file,
+        const std::string& neg_file
+    );
 };
 
 #endif

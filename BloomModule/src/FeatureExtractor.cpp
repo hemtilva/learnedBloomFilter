@@ -20,6 +20,43 @@ inline CharType get_char_type(char c) {
     return ALPHA;
 }
 
+std::vector<int> extract_single_token_hashes(const std::string& text, int num_bins) {
+    std::vector<int> active_bins;
+    
+    uint32_t current_hash = 0;
+    int token_length = 0;
+    CharType current_type = DELIMITER; 
+
+    for (char c : text) {
+        CharType type = get_char_type(c);
+        
+        if (type == DELIMITER) {
+            if (token_length > 0) {
+                active_bins.push_back(current_hash % num_bins);
+                current_hash = 0;
+                token_length = 0;
+            }
+            current_type = DELIMITER;
+        } else {
+            if (token_length > 0 && type != current_type) {
+                active_bins.push_back(current_hash % num_bins);
+                current_hash = 0;
+                token_length = 0;
+            }
+            
+            current_hash = current_hash * 31 + static_cast<uint8_t>(c);
+            token_length++;
+            current_type = type;
+        }
+    }
+
+    if (token_length > 0) {
+        active_bins.push_back(current_hash % num_bins);
+    }
+
+    return active_bins;
+}
+
 py::tuple extract_token_hashes(const std::vector<std::string>& strings, int num_bins) {
     std::vector<float> data;
     std::vector<int> indices;
@@ -78,6 +115,23 @@ py::tuple extract_token_hashes(const std::vector<std::string>& strings, int num_
     return py::make_tuple(py_data, py_indices, py_indptr);
 }
 
+std::vector<int> extract_single_sparse_ngrams(const std::string& text, int num_bins) {
+    std::vector<int> active_bins;
+    size_t s_len = text.length();
+
+    if (s_len >= 3) {
+        for (size_t i = 0; i <= s_len - 3; i++) {
+            uint32_t h = (static_cast<uint8_t>(text[i]) * 961) + 
+                         (static_cast<uint8_t>(text[i+1]) * 31) + 
+                         static_cast<uint8_t>(text[i+2]);
+            
+            active_bins.push_back(h % num_bins);
+        }
+    }
+
+    return active_bins;
+}
+
 py::tuple extract_sparse_ngrams(const std::vector<std::string>& strings, int num_bins) {
     std::vector<float> data;
     std::vector<int> indices;
@@ -95,18 +149,6 @@ py::tuple extract_sparse_ngrams(const std::vector<std::string>& strings, int num
                              static_cast<uint8_t>(s[i+2]);
                 
                 indices.push_back(h % num_bins);
-                data.push_back(1.0f);
-            }
-        }
-
-        if (s_len >= 4) {
-            for (size_t i = 0; i <= s_len - 4; i++) {
-                uint32_t h = (static_cast<uint8_t>(s[i]) * 29791) + 
-                             (static_cast<uint8_t>(s[i+1]) * 961) + 
-                             (static_cast<uint8_t>(s[i+2]) * 31) + 
-                             static_cast<uint8_t>(s[i+3]);
-                
-                indices.push_back((h ^ 0x5bd1e995) % num_bins);
                 data.push_back(1.0f);
             }
         }

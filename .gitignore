@@ -1,3 +1,4 @@
 *.exe
 *.o
 visualizer.ipynb
+.vscode/settings.json

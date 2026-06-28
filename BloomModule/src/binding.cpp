@@ -40,5 +40,6 @@ PYBIND11_MODULE(cppbloom, m){
     py::class_<Evaluator>(m,"Evaluator")
         .def(py::init<>())
         .def("generate_random_strings",&Evaluator::generateRandomStrings)
-        .def("run_single_experiment",&Evaluator::runSingleExperiment);
+        .def("run_single_experiment",&Evaluator::runSingleExperiment)
+        .def("run_learned_experiment", &Evaluator::runLearnedExperiment);
 }
